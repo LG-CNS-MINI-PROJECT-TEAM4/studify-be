@@ -1,5 +1,7 @@
 package com.lgcns.studify_be.post.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,13 @@ public class PostService {
         // author 조회
         PostEntity post = postRepository.save(request.toEntity());
         return PostResponseDTO.fromEntity(post);
+    }
+
+    public List<PostResponseDTO> readPostList() {
+        List<PostEntity> postList = postRepository.findAll();
+        return postList.stream()
+                        .map(entity -> PostResponseDTO.fromEntity(entity))
+                        .toList();     
     }
 
 }

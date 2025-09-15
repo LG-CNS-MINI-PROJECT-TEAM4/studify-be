@@ -1,5 +1,9 @@
 package com.lgcns.studify_be.post.domain.dto;
 
+import java.time.LocalDateTime;
+
+import org.springframework.data.convert.Jsr310Converters.LocalDateTimeToInstantConverter;
+
 import com.lgcns.studify_be.post.domain.entity.Category;
 import com.lgcns.studify_be.post.domain.entity.PostEntity;
 
@@ -22,6 +26,8 @@ public class PostResponseDTO {
     private String title;
     private String content;
     private Category category;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
     // private String authorId;
 
     // authorId, comments 추가 필요
@@ -31,6 +37,8 @@ public class PostResponseDTO {
                             .title(post.getTitle())
                             .content(post.getContent())
                             .category(post.getCategory())
+                            .createdAt(post.getCreatedAt())
+                            .updatedAt(post.getUpdatedAt())
                             .build();
     }
 }
