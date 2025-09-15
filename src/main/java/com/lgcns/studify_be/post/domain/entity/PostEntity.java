@@ -53,7 +53,3 @@ public class PostEntity {
     // @JoinColumn(name = "author_id", nullable = false)
     // private UserEntity author;
 }
-
-enum Category {
-    STUDY, PROJECT
-}
