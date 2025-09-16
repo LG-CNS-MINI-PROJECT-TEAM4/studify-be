@@ -65,4 +65,10 @@ public class PostService {
         post.update(request);
         return PostResponseDTO.fromEntity(post);
     }
+
+    public void deletePost(Integer postId) {
+        PostEntity post = postRepository.findById(postId)
+                    .orElseThrow(() -> new RuntimeException("존재하지 않는 모집글"));
+        postRepository.delete(post);
+    }
 }

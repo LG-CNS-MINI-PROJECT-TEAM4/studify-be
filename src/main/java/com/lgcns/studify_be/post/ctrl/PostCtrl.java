@@ -17,6 +17,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -87,6 +88,7 @@ public class PostCtrl {
     }
 
     // 모집글 수정
+    @Operation(summary = "모집글 수정")
     @PutMapping("/{postId}")
     public ResponseEntity<?> updatePost(@PathVariable("postId") Integer postId, 
                                         @RequestBody PostRequestDTO request) {
@@ -98,5 +100,12 @@ public class PostCtrl {
         }
     }
 
-    
+    // 모집글 삭제
+    @Operation(summary = "모집글 삭제")
+    @DeleteMapping("/{postId}")
+    public ResponseEntity<?> deletePost(@PathVariable("postId") Integer postId) {
+        postService.deletePost(postId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+    }
+
 }
