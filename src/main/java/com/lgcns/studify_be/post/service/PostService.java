@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.lgcns.studify_be.post.domain.dto.PostRequestDTO;
 import com.lgcns.studify_be.post.domain.dto.PostResponseDTO;
@@ -56,4 +57,12 @@ public class PostService {
                 .toList();
     }
 
+    @Transactional
+    public PostResponseDTO updatePost(Integer postId, PostRequestDTO request) {
+        // author 조회
+        PostEntity post = postRepository.findById(postId)
+                    .orElseThrow(() -> new RuntimeException("존재하지 않는 모집글"));
+        post.update(request);
+        return PostResponseDTO.fromEntity(post);
+    }
 }

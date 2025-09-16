@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PutMapping;
+
 
 @RestController
 @RequestMapping("studify/api/v1/post")
@@ -82,6 +84,19 @@ public class PostCtrl {
                 postList = postService.findPostByTitleContent(keyword);
         }
         return new ResponseEntity<List<PostResponseDTO>>(postList, HttpStatus.OK) ; 
-    }  
+    }
+
+    // 모집글 수정
+    @PutMapping("/{postId}")
+    public ResponseEntity<?> updatePost(@PathVariable("postId") Integer postId, 
+                                        @RequestBody PostRequestDTO request) {
+        PostResponseDTO response = postService.updatePost(postId, request);
+        if( response != null ) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(null);
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
     
 }

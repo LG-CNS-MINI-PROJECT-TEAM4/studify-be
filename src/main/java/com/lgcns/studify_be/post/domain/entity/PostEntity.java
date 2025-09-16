@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.lgcns.studify_be.post.domain.dto.PostRequestDTO;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -52,4 +54,10 @@ public class PostEntity {
     // @ManyToOne(fetch = FetchType.LAZY)
     // @JoinColumn(name = "author_id", nullable = false)
     // private UserEntity author;
+
+    public void update(PostRequestDTO request) {
+        this.title = request.getTitle();
+        this.content = request.getContent();
+        this.updatedAt = LocalDateTime.now();
+    }
 }

@@ -2,8 +2,6 @@ package com.lgcns.studify_be.post.domain.dto;
 
 import java.time.LocalDateTime;
 
-import org.springframework.data.convert.Jsr310Converters.LocalDateTimeToInstantConverter;
-
 import com.lgcns.studify_be.post.domain.entity.Category;
 import com.lgcns.studify_be.post.domain.entity.PostEntity;
 
