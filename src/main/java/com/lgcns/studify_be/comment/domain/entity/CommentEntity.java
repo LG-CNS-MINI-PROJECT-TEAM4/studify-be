@@ -42,16 +42,16 @@ public class CommentEntity {
 
     private LocalDateTime updatedAt;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "id", nullable = false)
-    // private UserEntity user;
-    private Long user;
+    // @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    // @JoinColumn(name = "id", nullable = false)
+    // // private UserEntity user;
+    // private Long user;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "post_id", nullable = false)
-    @JsonBackReference
-    // private PostEntity post;
-    private Long post;
+    // @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    // @JoinColumn(name = "post_id", nullable = false)
+    // @JsonBackReference
+    // // private PostEntity post;
+    // private Long post;
 
     @PrePersist
     protected void onCreate() {
