@@ -13,15 +13,13 @@ import com.lgcns.studify_be.post.domain.dto.PostResponseDTO;
 import com.lgcns.studify_be.post.service.PostService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
-
-
-
 
 @RestController
 @RequestMapping("studify/api/v1/post")
@@ -53,8 +51,8 @@ public class PostCtrl {
 
     // 모집글 상세 조회
     @Operation(summary = "모집글 상세 조회")
-    @GetMapping("/detail")
-    public ResponseEntity<?> readPostDetail(Integer postId) {
+    @GetMapping("/detail/{postId}")
+    public ResponseEntity<?> readPostDetail(@PathVariable("postId") Integer postId) {
         PostResponseDTO response = postService.readPostDetail(postId);
         if( response != null ) {
             return new ResponseEntity<>(response , HttpStatus.OK);
@@ -63,27 +61,26 @@ public class PostCtrl {
         } 
     }
 
-    // 특정 모집글 검색(제목)
-    @Operation(summary = "제목 키워드로 모집글 검색")
-    @GetMapping("/title/{keyword}")
-    public ResponseEntity<?> findPostByTitle(@PathVariable("keyword") String keyword) {
-        List<PostResponseDTO> postList = postService.findPostByTitle(keyword);
-        return new ResponseEntity<List<PostResponseDTO>>(postList, HttpStatus.OK) ; 
-    }
-
-    // 특정 모집글 검색(본문)
-    @Operation(summary = "본문 키워드로 모집글 검색")
-    @GetMapping("/content/{keyword}")
-    public ResponseEntity<?> findPostByContent(@PathVariable("keyword") String keyword) {
-        List<PostResponseDTO> postList = postService.findPostByContent(keyword);
-        return new ResponseEntity<List<PostResponseDTO>>(postList, HttpStatus.OK) ; 
-    }
-
-    // 특정 모집글 검색(제목 + 본문)
-    @Operation(summary = "제목과 본문 키워드로 모집글 검색")
-    @GetMapping("/titlecontent/{keyword}")
-    public ResponseEntity<?> findPostByTitleContent(@PathVariable("keyword") String keyword) {
-        List<PostResponseDTO> postList = postService.findPostByTitleContent(keyword);
+    // 특정 모집글 검색( 제목 | 본문 | 제목 + 본문)
+    @Operation(summary = "키워드로 모집글 검색")
+    @GetMapping("/search")
+    public ResponseEntity<?> findPostByTitleContent(
+            @Parameter(description = "검색 키워드")
+            @RequestParam String keyword,
+            @Parameter(description = "검색 타입 (title=제목, content=본문, all=제목+본문)", example = "all")
+            @RequestParam(defaultValue = "all") String type) {
+        List<PostResponseDTO> postList;
+        
+        switch (type) {
+            case "title":
+                postList = postService.findPostByTitle(keyword);
+                break;
+            case "content":
+                postList = postService.findPostByContent(keyword);
+                break;
+            default:
+                postList = postService.findPostByTitleContent(keyword);
+        }
         return new ResponseEntity<List<PostResponseDTO>>(postList, HttpStatus.OK) ; 
     }  
     
