@@ -29,4 +29,31 @@ public class PostService {
                         .toList();     
     }
 
+    public PostResponseDTO readPostDetail(Integer postId) {
+        PostEntity post = postRepository.findById(postId)
+                    .orElseThrow(() -> new RuntimeException("존재하지 않는 모집글"));
+        return PostResponseDTO.fromEntity(post);
+    }
+
+    public List<PostResponseDTO> findPostByTitle(String keyword) {
+        List<PostEntity> postList = postRepository.findByTitleContainingIgnoreCase(keyword);
+        return postList.stream()
+                .map(entity -> PostResponseDTO.fromEntity(entity))
+                .toList();
+    }
+
+    public List<PostResponseDTO> findPostByContent(String keyword) {
+        List<PostEntity> postList = postRepository.findByContentContainingIgnoreCase(keyword);
+        return postList.stream()
+                .map(entity -> PostResponseDTO.fromEntity(entity))
+                .toList();
+    }
+
+    public List<PostResponseDTO> findPostByTitleContent(String keyword) {
+        List<PostEntity> postList = postRepository.findByTitleContainingIgnoreCaseOrContentContainingIgnoreCase(keyword, keyword);
+        return postList.stream()
+                .map(entity -> PostResponseDTO.fromEntity(entity))
+                .toList();
+    }
+
 }
