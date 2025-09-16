@@ -1,9 +1,11 @@
 package com.lgcns.studify_be.post.domain.dto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.lgcns.studify_be.post.domain.entity.Category;
 import com.lgcns.studify_be.post.domain.entity.PostEntity;
+import com.lgcns.studify_be.post.domain.entity.PostStatus;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,6 +28,10 @@ public class PostResponseDTO {
     private Category category;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private Integer recruitmentCount;
+    private List<String> techStack;
+    private LocalDateTime deadline;
+    private PostStatus status;
     // private String authorId;
 
     // authorId, comments 추가 필요
@@ -37,6 +43,10 @@ public class PostResponseDTO {
                             .category(post.getCategory())
                             .createdAt(post.getCreatedAt())
                             .updatedAt(post.getUpdatedAt())
+                            .recruitmentCount(post.getRecruitmentCount())
+                            .techStack(post.getTechStack())
+                            .deadline(post.getDeadline())
+                            .status(post.getStatus())
                             .build();
     }
 }
