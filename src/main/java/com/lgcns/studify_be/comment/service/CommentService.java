@@ -54,4 +54,24 @@ public class CommentService {
                                             .toList();
         return commentDTOs;
     }
+
+    @Transactional
+    public CommentResponseDTO updateComment(Integer commentId, CommentRequestDTO req) {
+        System.out.println(">>> CommentService - updateComment");
+
+        CommentEntity comment = commentRepository.findById(commentId)
+                                .orElseThrow(() -> new RuntimeException("존재하지 않는 댓글입니다."));
+
+        // TODO: 나중에 인증된 사용자 정보로 변경                        
+        User tempUser = userRepository.findById(2L)
+                            .orElseThrow(() -> new RuntimeException("임시 사용자를 찾을 수 없습니다."));
+        
+        if(!comment.getUser().getId().equals(tempUser.getId())) {
+            throw new RuntimeException("댓글 수정 권한이 없습니다.");
+        }
+
+        comment.setContent(req.getContent());
+
+        return CommentResponseDTO.fromEntity(comment);
+    }
 }
