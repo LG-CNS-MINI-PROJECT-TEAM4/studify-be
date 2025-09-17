@@ -36,6 +36,8 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/").permitAll()
                 .requestMatchers(HttpMethod.GET, "/studify/api/v1/post/**").permitAll()
                 .anyRequest().authenticated()
+                .requestMatchers(HttpMethod.POST, "/studify/api/v1/users").permitAll() // ← 가입 허용
+
             )
             .exceptionHandling(ex -> ex
                 .authenticationEntryPoint((req, res, e) -> {
@@ -57,3 +59,7 @@ public class SecurityConfig {
         return cfg.getAuthenticationManager();
     }
 }
+
+// permitAll: 로그인/리프레시, 인증 필요: 로그아웃/그 밖의 API
+// .requestMatchers(HttpMethod.POST, "/api/auth/login", "/api/auth/refresh").permitAll()
+// .requestMatchers(HttpMethod.POST, "/api/auth/logout").authenticated()
