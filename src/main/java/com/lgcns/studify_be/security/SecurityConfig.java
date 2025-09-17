@@ -58,3 +58,7 @@ public class SecurityConfig {
         return cfg.getAuthenticationManager();
     }
 }
+
+// permitAll: 로그인/리프레시, 인증 필요: 로그아웃/그 밖의 API
+// .requestMatchers(HttpMethod.POST, "/api/auth/login", "/api/auth/refresh").permitAll()
+// .requestMatchers(HttpMethod.POST, "/api/auth/logout").authenticated()
