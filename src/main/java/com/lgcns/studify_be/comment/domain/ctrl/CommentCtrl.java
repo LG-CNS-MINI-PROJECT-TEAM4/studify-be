@@ -11,6 +11,7 @@ import com.lgcns.studify_be.comment.domain.dto.CommentRequestDTO;
 import com.lgcns.studify_be.comment.domain.dto.CommentResponseDTO;
 import com.lgcns.studify_be.comment.service.CommentService;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,6 +43,7 @@ public class CommentCtrl {
     
     @PutMapping("/{commentId}")
     public ResponseEntity<CommentResponseDTO> update(
+        @PathVariable("postId") Integer postId,
         @PathVariable("commentId") Integer commentId, 
         @RequestBody CommentRequestDTO requestDTO
         // @AuthenticationPrincipal UserDetailsImpl userDetails
@@ -53,5 +55,19 @@ public class CommentCtrl {
         CommentResponseDTO updatedComment = commentService.updateComment(commentId, requestDTO);
         
         return ResponseEntity.ok(updatedComment);
+    }
+
+    @DeleteMapping("/{commentId}") 
+    public ResponseEntity<Void> delete(
+        @PathVariable("postId") Integer postId,
+        @PathVariable("commentId") Integer commentId
+        // @AuthenticationPrincipal UserDetailsImpl userDetails
+    ) {
+        System.out.println(">>> CommentCtrl - delete");
+        System.out.println("commentId: " + commentId);
+
+        commentService.deleteComment(commentId);
+
+        return ResponseEntity.noContent().build();
     }
 }
