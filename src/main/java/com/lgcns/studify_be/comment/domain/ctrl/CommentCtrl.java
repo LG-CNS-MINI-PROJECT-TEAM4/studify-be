@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 
 @RestController
-@RequestMapping("/api/v1/post/{postId}/comment")
+@RequestMapping("/studify/api/v1/post/{postId}/comment")
 public class CommentCtrl {
     
     @Autowired
