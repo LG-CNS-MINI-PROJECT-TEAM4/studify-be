@@ -5,10 +5,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.lgcns.studify_be.comment.domain.dto.CommentResponseDTO;
-import com.lgcns.studify_be.post.domain.entity.Category;
 import com.lgcns.studify_be.post.domain.entity.Position;
 import com.lgcns.studify_be.post.domain.entity.PostEntity;
-import com.lgcns.studify_be.post.domain.entity.PostStatus;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -38,7 +36,8 @@ public class PostResponseDTO {
     private String meetingType;
     private String duration;
     private List<String> position;
-    // private List<CommentResponseDTO> comments;
+    private List<CommentResponseDTO> comments;
+    private Integer commentCount;
     // private String authorId;
 
     // authorId 추가 필요
@@ -49,9 +48,11 @@ public class PostResponseDTO {
                 ? post.getPosition().stream().map(Position::getValue).collect(Collectors.toList())
                 : null;
         
-        // List<CommentResponseDTO> commentDTOs = post.getComments().stream()
-        //                                             .map(CommentResponseDTO::fromEntity)
-        //                                             .toList();
+        List<CommentResponseDTO> commentDTOs = post.getComments().stream()
+                                                    .map(CommentResponseDTO::fromEntity)
+                                                    .toList();
+
+        Integer commentCount = post.getComments() != null ? post.getComments().size() : 0;
 
         return PostResponseDTO.builder()
                             .postId(post.getPostId())
@@ -67,7 +68,8 @@ public class PostResponseDTO {
                             .meetingType(post.getMeetingType())
                             .duration(post.getDuration())
                             .position(positionValues)
-                            // .comments(commentDTOs)
+                            .comments(commentDTOs)
+                            .commentCount(commentCount)
                             .build();
     }
 }

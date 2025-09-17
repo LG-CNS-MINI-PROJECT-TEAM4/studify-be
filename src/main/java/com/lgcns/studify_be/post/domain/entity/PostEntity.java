@@ -94,9 +94,9 @@ public class PostEntity {
     // @JoinColumn(name = "author_id", nullable = false)
     // private UserEntity author;
 
-    // @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    // @JsonManagedReference
-    // private List<CommentEntity> comments = new ArrayList<>();
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<CommentEntity> comments = new ArrayList<>();
 
     public void update(PostRequestDTO request) {
         this.title = request.getTitle();

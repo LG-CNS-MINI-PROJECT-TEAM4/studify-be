@@ -17,6 +17,6 @@ public interface PostRepository extends JpaRepository<PostEntity, Integer> {
     List<PostEntity> findByContentContainingIgnoreCase(String keyword);
     List<PostEntity> findByTitleContainingIgnoreCaseOrContentContainingIgnoreCase(String titleKeyword, String contentKeyword);
 
-    // @Query("SELECT p FROM PostEntity p LEFT JOIN FETCH p.comments WHERE p.postId = :postId")
-    // Optional<PostEntity> findByIdWithComments(@Param("postId") Integer postId);
+    @Query("SELECT p FROM PostEntity p LEFT JOIN FETCH p.comments WHERE p.postId = :postId")
+    Optional<PostEntity> findByIdWithComments(@Param("postId") Integer postId);
 }

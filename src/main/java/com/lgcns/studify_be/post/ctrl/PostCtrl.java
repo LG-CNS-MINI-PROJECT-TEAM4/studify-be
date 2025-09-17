@@ -110,6 +110,7 @@ public class PostCtrl {
     }
 
     // 마감하기
+    @Operation(summary = "모집글 마감")
     @PatchMapping("/{postId}")
     public ResponseEntity<?> closePost(@PathVariable("postId") Integer postId) {
         PostResponseDTO response = postService.closePost(postId);
