@@ -31,7 +31,7 @@ public class CommentCtrl {
     @PostMapping("/register")
     @Operation(summary = "댓글 등록")
     public ResponseEntity<List<CommentResponseDTO>> register(
-        @PathVariable("postId") Integer postId,
+        @PathVariable("postId") Long postId,
         @RequestBody CommentRequestDTO requestDTO
         // @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
@@ -47,8 +47,8 @@ public class CommentCtrl {
     @PutMapping("/{commentId}")
     @Operation(summary = "댓글 수정")
     public ResponseEntity<CommentResponseDTO> update(
-        @PathVariable("postId") Integer postId,
-        @PathVariable("commentId") Integer commentId, 
+        @PathVariable("postId") Long postId,
+        @PathVariable("commentId") Long commentId, 
         @RequestBody CommentRequestDTO requestDTO
         // @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
@@ -64,8 +64,8 @@ public class CommentCtrl {
     @DeleteMapping("/{commentId}") 
     @Operation(summary = "댓글 삭제")
     public ResponseEntity<Void> delete(
-        @PathVariable("postId") Integer postId,
-        @PathVariable("commentId") Integer commentId
+        @PathVariable("postId") Long postId,
+        @PathVariable("commentId") Long commentId
         // @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         System.out.println(">>> CommentCtrl - delete");

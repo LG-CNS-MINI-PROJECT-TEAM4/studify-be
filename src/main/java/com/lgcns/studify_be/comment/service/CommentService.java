@@ -29,7 +29,7 @@ public class CommentService {
     private UserRepository userRepository;
 
     @Transactional
-    public List<CommentResponseDTO> createComment(Integer postId, CommentRequestDTO req) {
+    public List<CommentResponseDTO> createComment(Long postId, CommentRequestDTO req) {
         System.out.println(">>> CommentService - createComment");
 
         PostEntity post = postRepository.findById(postId)
@@ -56,7 +56,7 @@ public class CommentService {
     }
 
     @Transactional
-    public CommentResponseDTO updateComment(Integer commentId, CommentRequestDTO req) {
+    public CommentResponseDTO updateComment(Long commentId, CommentRequestDTO req) {
         System.out.println(">>> CommentService - updateComment");
 
         CommentEntity comment = commentRepository.findById(commentId)
@@ -76,7 +76,7 @@ public class CommentService {
     }
 
     @Transactional
-    public void deleteComment(Integer commentId) {
+    public void deleteComment(Long commentId) {
         System.out.println(">>> CommentService - deleteComment");
 
         CommentEntity comment = commentRepository.findById(commentId)
