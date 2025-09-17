@@ -56,7 +56,7 @@ public class PostCtrl {
     // 모집글 상세 조회
     @Operation(summary = "모집글 상세 조회")
     @GetMapping("/detail/{postId}")
-    public ResponseEntity<?> readPostDetail(@PathVariable("postId") Integer postId) {
+    public ResponseEntity<?> readPostDetail(@PathVariable("postId") Long postId) {
         PostResponseDTO response = postService.readPostDetail(postId);
         if( response != null ) {
             return new ResponseEntity<>(response , HttpStatus.OK);
@@ -91,7 +91,7 @@ public class PostCtrl {
     // 모집글 수정
     @Operation(summary = "모집글 수정")
     @PutMapping("/{postId}")
-    public ResponseEntity<?> updatePost(@PathVariable("postId") Integer postId, 
+    public ResponseEntity<?> updatePost(@PathVariable("postId") Long postId, 
                                         @RequestBody PostRequestDTO request) {
         PostResponseDTO response = postService.updatePost(postId, request);
         if( response != null ) {
@@ -104,7 +104,7 @@ public class PostCtrl {
     // 모집글 삭제
     @Operation(summary = "모집글 삭제")
     @DeleteMapping("/{postId}")
-    public ResponseEntity<?> deletePost(@PathVariable("postId") Integer postId) {
+    public ResponseEntity<?> deletePost(@PathVariable("postId") Long postId) {
         postService.deletePost(postId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
     }
@@ -112,7 +112,7 @@ public class PostCtrl {
     // 마감하기
     @Operation(summary = "모집글 마감")
     @PatchMapping("/{postId}")
-    public ResponseEntity<?> closePost(@PathVariable("postId") Integer postId) {
+    public ResponseEntity<?> closePost(@PathVariable("postId") Long postId) {
         PostResponseDTO response = postService.closePost(postId);
         if( response != null ) {
             return ResponseEntity.status(HttpStatus.CREATED).body(null);

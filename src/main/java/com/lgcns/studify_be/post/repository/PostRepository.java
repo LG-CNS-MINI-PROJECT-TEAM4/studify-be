@@ -11,12 +11,12 @@ import java.util.Optional;
 
 
 @Repository
-public interface PostRepository extends JpaRepository<PostEntity, Integer> {
+public interface PostRepository extends JpaRepository<PostEntity, Long> {
     
     List<PostEntity> findByTitleContainingIgnoreCase(String keyword);
     List<PostEntity> findByContentContainingIgnoreCase(String keyword);
     List<PostEntity> findByTitleContainingIgnoreCaseOrContentContainingIgnoreCase(String titleKeyword, String contentKeyword);
 
     @Query("SELECT p FROM PostEntity p LEFT JOIN FETCH p.comments WHERE p.postId = :postId")
-    Optional<PostEntity> findByIdWithComments(@Param("postId") Integer postId);
+    Optional<PostEntity> findByIdWithComments(@Param("postId") Long postId);
 }
