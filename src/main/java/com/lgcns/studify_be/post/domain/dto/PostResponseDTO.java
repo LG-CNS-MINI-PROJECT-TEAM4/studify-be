@@ -3,6 +3,7 @@ package com.lgcns.studify_be.post.domain.dto;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.lgcns.studify_be.comment.domain.dto.CommentResponseDTO;
 import com.lgcns.studify_be.post.domain.entity.Category;
 import com.lgcns.studify_be.post.domain.entity.PostEntity;
 import com.lgcns.studify_be.post.domain.entity.PostStatus;
@@ -32,10 +33,15 @@ public class PostResponseDTO {
     private List<String> techStack;
     private LocalDateTime deadline;
     private PostStatus status;
+    private List<CommentResponseDTO> comments;
     // private String authorId;
 
-    // authorId, comments 추가 필요
+    // authorId 추가 필요
     public static PostResponseDTO fromEntity(PostEntity post) {
+        List<CommentResponseDTO> commentDTOs = post.getComments().stream()
+                                                    .map(CommentResponseDTO::fromEntity)
+                                                    .toList();
+
         return PostResponseDTO.builder()
                             .postId(post.getPostId())
                             .title(post.getTitle())
@@ -47,6 +53,7 @@ public class PostResponseDTO {
                             .techStack(post.getTechStack())
                             .deadline(post.getDeadline())
                             .status(post.getStatus())
+                            .comments(commentDTOs)
                             .build();
     }
 }
