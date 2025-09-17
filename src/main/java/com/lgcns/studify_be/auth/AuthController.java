@@ -22,8 +22,8 @@ public class AuthController {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    // 회원가입 (테스트용 간단 버전)
-    @PostMapping("/signup")
+    // 회원가입 (usercontroller에서 처리하므로 비활성화)
+    /*@PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody SignUpReq req) {
         if (userRepository.existsByEmail(req.getEmail())) {
             return ResponseEntity.badRequest().body("Email already exists");
@@ -37,7 +37,7 @@ public class AuthController {
 
         return ResponseEntity.ok("Signup success");
     }
-
+    */
     // 로그인 → JWT 발급
     @PostMapping("/login")
     public ResponseEntity<TokenRes> login(@RequestBody LoginReq req) {

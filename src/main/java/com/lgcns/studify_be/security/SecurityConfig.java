@@ -35,6 +35,8 @@ public class SecurityConfig {
                 ).permitAll()
                 .requestMatchers(HttpMethod.GET, "/").permitAll()
                 .anyRequest().authenticated()
+                .requestMatchers(HttpMethod.POST, "/studify/api/v1/users").permitAll() // ← 가입 허용
+
             )
             .exceptionHandling(ex -> ex
                 .authenticationEntryPoint((req, res, e) -> {
