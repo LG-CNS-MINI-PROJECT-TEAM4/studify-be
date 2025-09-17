@@ -11,6 +11,8 @@ import com.lgcns.studify_be.comment.domain.dto.CommentRequestDTO;
 import com.lgcns.studify_be.comment.domain.dto.CommentResponseDTO;
 import com.lgcns.studify_be.comment.service.CommentService;
 
+import io.swagger.v3.oas.annotations.Operation;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,6 +29,7 @@ public class CommentCtrl {
     private CommentService commentService;
 
     @PostMapping("/register")
+    @Operation(summary = "댓글 등록")
     public ResponseEntity<List<CommentResponseDTO>> register(
         @PathVariable("postId") Integer postId,
         @RequestBody CommentRequestDTO requestDTO
@@ -42,6 +45,7 @@ public class CommentCtrl {
     }
     
     @PutMapping("/{commentId}")
+    @Operation(summary = "댓글 수정")
     public ResponseEntity<CommentResponseDTO> update(
         @PathVariable("postId") Integer postId,
         @PathVariable("commentId") Integer commentId, 
@@ -58,6 +62,7 @@ public class CommentCtrl {
     }
 
     @DeleteMapping("/{commentId}") 
+    @Operation(summary = "댓글 삭제")
     public ResponseEntity<Void> delete(
         @PathVariable("postId") Integer postId,
         @PathVariable("commentId") Integer commentId
