@@ -34,6 +34,7 @@ public class SecurityConfig {
                     "/actuator/health"
                 ).permitAll()
                 .requestMatchers(HttpMethod.GET, "/").permitAll()
+                .requestMatchers(HttpMethod.GET, "/studify/api/v1/post/**").permitAll()
                 .anyRequest().authenticated()
             )
             .exceptionHandling(ex -> ex
