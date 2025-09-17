@@ -26,3 +26,9 @@ logging:
     org.hibernate.SQL: debug
     org.hibernate.orm.jdbc.bind: trace
 
+jwt:
+  secret: "change-me-please-very-long-secret-key-for-dev"
+  access-token-validity: 3600000      # 1h (ms)
+  refresh-token-validity: 1209600000  # 14d (ms)
+
+
