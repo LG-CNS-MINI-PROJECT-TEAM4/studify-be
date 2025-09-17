@@ -132,4 +132,18 @@ public class PostCtrl {
         }
     }
 
+    // 포지션 기반 모집글 검색
+    @GetMapping("/search/position")
+    @Operation(summary = "포지션 기반 모집글 검색")
+    public ResponseEntity<List<PostResponseDTO>> searchPostsByPosition(
+            @Parameter(description = "parameter를 보내지 않거나 'all'로 보낼 경우 모든 포지션이 검색되고 'be, ai' 와 같이 두 개의 값이 ,로 연결되어 보내질 경우 두 포지션이 겁색됩니다.", example = "be, fe")
+            @RequestParam(required = false) String position) {
+        List<PostResponseDTO> response = postService.searchPostsByPosition(position);
+        if( response != null ) {
+            return new ResponseEntity<>(response , HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } 
+    }
+
 }

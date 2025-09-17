@@ -9,6 +9,7 @@ import com.lgcns.studify_be.post.domain.entity.PostEntity;
 import com.lgcns.studify_be.post.domain.entity.PostStatus;
 import com.lgcns.studify_be.user.User;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,13 +27,21 @@ public class PostRequestDTO {
     
     private String title;
     private String content;
+
+    @Schema(description = "모집글 카테고리(project | study)", example = "project")
     private String category;
     private Integer recruitmentCount;
+
+    @Schema(description = "기술 스택", example = "[\"Spring\", \"JPA\"]")
     private List<String> techStack;
+    
+    @Schema(description = "모집글 상태(open | closed)", example = "open")
     private String status;
     private LocalDateTime deadline;
     private String meetingType;
     private String duration;
+    
+    @Schema(description = "포지션(be | fe | pm | designer | ai | android | ios | web)", example = "[\"be\", \"pm\"]")
     private List<String> position;
     private Long authorId;
 

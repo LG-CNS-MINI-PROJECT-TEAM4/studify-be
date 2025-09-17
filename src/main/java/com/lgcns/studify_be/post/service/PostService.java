@@ -1,5 +1,6 @@
 package com.lgcns.studify_be.post.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.lgcns.studify_be.post.domain.dto.PostRequestDTO;
 import com.lgcns.studify_be.post.domain.dto.PostResponseDTO;
+import com.lgcns.studify_be.post.domain.entity.Position;
 import com.lgcns.studify_be.post.domain.entity.PostEntity;
 import com.lgcns.studify_be.post.domain.entity.PostStatus;
 import com.lgcns.studify_be.post.repository.PostRepository;
@@ -93,5 +95,32 @@ public class PostService {
         post.setStatus(PostStatus.CLOSED);
         postRepository.save(post);
         return PostResponseDTO.fromEntity(post);
+    }
+
+    @Transactional(readOnly = true)
+    public List<PostResponseDTO> searchPostsByPosition(String position) {
+        if (position == null || position.equalsIgnoreCase("all")) {
+            return postRepository.findAll()
+                    .stream()
+                    .map(PostResponseDTO::fromEntity)
+                    .toList();
+        }
+
+        List<String> positionsStr = List.of(position.split(",")); 
+        List<Position> positions = new ArrayList<>();
+        for (String p : positionsStr) {
+            Position pos = Position.from(p.trim());
+            if (pos != null) positions.add(pos);
+        }
+
+        List<PostEntity> result = new ArrayList<>();
+        for (Position pos : positions) {
+            result.addAll(postRepository.findByPosition(pos));
+        }
+
+        return result.stream()
+                     .distinct()
+                     .map(PostResponseDTO::fromEntity)
+                     .toList();
     }
 }

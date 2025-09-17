@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.lgcns.studify_be.post.domain.entity.Position;
 import com.lgcns.studify_be.post.domain.entity.PostEntity;
 import java.util.List;
 import java.util.Optional;
@@ -19,4 +20,7 @@ public interface PostRepository extends JpaRepository<PostEntity, Long> {
 
     @Query("SELECT p FROM PostEntity p LEFT JOIN FETCH p.comments WHERE p.postId = :postId")
     Optional<PostEntity> findByIdWithComments(@Param("postId") Long postId);
+
+    @Query("SELECT p FROM PostEntity p WHERE :position MEMBER OF p.position")
+    List<PostEntity> findByPosition(@Param("position") Position position);
 }
