@@ -10,6 +10,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.lgcns.studify_be.comment.domain.entity.CommentEntity;
 import com.lgcns.studify_be.post.domain.dto.PostRequestDTO;
+import com.lgcns.studify_be.user.User;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
@@ -23,6 +24,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -42,7 +44,7 @@ public class PostEntity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer postId;
+    private Long postId;
 
     @Column(nullable = false, length = 255)
     private String title;
@@ -75,9 +77,24 @@ public class PostEntity {
     @Enumerated(EnumType.STRING)
     private PostStatus status;
 
-    // @ManyToOne(fetch = FetchType.LAZY)
-    // @JoinColumn(name = "author_id", nullable = false)
-    // private UserEntity author;
+    @Column(nullable = false, length = 255)
+    private String meetingType;
+
+    @Column(nullable = false, length = 255)
+    private String duration;
+
+    @ElementCollection(targetClass = Position.class)
+    @CollectionTable(
+        name = "post_position",
+        joinColumns = @JoinColumn(name = "post_id")
+    )
+    @Enumerated(EnumType.STRING)
+    @Column(name = "position", nullable = false)
+    private List<Position> position = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "author_id", nullable = false)
+    private User author;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonManagedReference
@@ -90,5 +107,21 @@ public class PostEntity {
         this.recruitmentCount = request.getRecruitmentCount();
         this.techStack = request.getTechStack();
         this.deadline = request.getDeadline();
+        this.meetingType = request.getMeetingType();
+        this.duration = request.getDuration();
+
+        if (request.getCategory() != null) {
+            this.category = Category.from(request.getCategory());
+        }
+        if (request.getStatus() != null) {
+            this.status = PostStatus.from(request.getStatus());
+        }
+
+        if (request.getPosition() != null) {
+        List<Position> positions = request.getPosition().stream()
+                                           .map(Position::from) // Position enum에 from(String) 메서드 필요
+                                           .toList();
+        this.position = new ArrayList<>(positions);
+        }
     }
 }
