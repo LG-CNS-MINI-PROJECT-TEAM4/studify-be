@@ -111,10 +111,13 @@ public class PostCtrl {
 
     // 마감하기
     @PatchMapping("/{postId}")
-    public ResponseEntity<?> closePost(@PathVariable("postId") Integer postId,
-                                        @RequestParam String status) {
-        
-                                            return null;
+    public ResponseEntity<?> closePost(@PathVariable("postId") Integer postId) {
+        PostResponseDTO response = postService.closePost(postId);
+        if( response != null ) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(null);
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
 }

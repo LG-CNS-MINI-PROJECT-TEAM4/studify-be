@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.lgcns.studify_be.post.domain.dto.PostRequestDTO;
 import com.lgcns.studify_be.post.domain.dto.PostResponseDTO;
 import com.lgcns.studify_be.post.domain.entity.PostEntity;
+import com.lgcns.studify_be.post.domain.entity.PostStatus;
 import com.lgcns.studify_be.post.repository.PostRepository;
 
 @Service
@@ -73,7 +74,11 @@ public class PostService {
         postRepository.delete(post);
     }
 
-    public PostResponseDTO closePost(Integer postId, String status) {
-        return null;
+    public PostResponseDTO closePost(Integer postId) {
+        PostEntity post = postRepository.findById(postId)
+                    .orElseThrow(() -> new RuntimeException("존재하지 않는 모집글"));
+        post.setStatus(PostStatus.CLOSED);
+        postRepository.save(post);
+        return PostResponseDTO.fromEntity(post);
     }
 }
