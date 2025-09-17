@@ -24,7 +24,7 @@ import lombok.ToString;
 @ToString
 public class PostResponseDTO {
     
-    private Integer postId;
+    private Long postId;
     private String title;
     private String content;
     private Category category;

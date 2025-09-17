@@ -42,7 +42,7 @@ public class PostEntity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer postId;
+    private Long postId;
 
     @Column(nullable = false, length = 255)
     private String title;
