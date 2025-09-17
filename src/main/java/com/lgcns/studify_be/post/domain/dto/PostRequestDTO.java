@@ -25,29 +25,29 @@ public class PostRequestDTO {
     
     private String title;
     private String content;
-    private Category category;
+    private String category;
     // private String authorId;
     private Integer recruitmentCount;
     private List<String> techStack;
-    private PostStatus status;
+    private String status;
     private LocalDateTime deadline;
     private String meetingType;
     private String duration;
-    private List<Position> position;
+    private List<String> position;
 
     // author 추가 필요
     public PostEntity toEntity() {
         return PostEntity.builder()
                         .title(this.title)
                         .content(this.content)
-                        .category(this.category)
+                        .category(Category.from(this.category))
                         .recruitmentCount(this.recruitmentCount)
                         .techStack(this.techStack)
-                        .status(this.status)
+                        .status(PostStatus.from(this.status))
                         .deadline(this.deadline)
                         .meetingType(this.meetingType)
                         .duration(this.duration)
-                        .position(this.position)
+                        .position(Position.fromList(this.position))
                         .build();
     }
 }

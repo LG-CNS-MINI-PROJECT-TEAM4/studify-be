@@ -107,6 +107,19 @@ public class PostEntity {
         this.deadline = request.getDeadline();
         this.meetingType = request.getMeetingType();
         this.duration = request.getDuration();
-        this.position = request.getPosition();
+
+        if (request.getCategory() != null) {
+            this.category = Category.from(request.getCategory());
+        }
+        if (request.getStatus() != null) {
+            this.status = PostStatus.from(request.getStatus());
+        }
+
+        if (request.getPosition() != null) {
+        List<Position> positions = request.getPosition().stream()
+                                           .map(Position::from) // Position enum에 from(String) 메서드 필요
+                                           .toList();
+        this.position = new ArrayList<>(positions);
+        }
     }
 }

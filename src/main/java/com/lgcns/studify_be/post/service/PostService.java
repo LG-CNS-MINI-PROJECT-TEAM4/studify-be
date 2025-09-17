@@ -72,4 +72,8 @@ public class PostService {
                     .orElseThrow(() -> new RuntimeException("존재하지 않는 모집글"));
         postRepository.delete(post);
     }
+
+    public PostResponseDTO closePost(Integer postId, String status) {
+        return null;
+    }
 }
