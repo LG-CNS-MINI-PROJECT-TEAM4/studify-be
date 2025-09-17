@@ -29,20 +29,19 @@ public class CommentService {
     private UserRepository userRepository;
 
     @Transactional
-    public List<CommentResponseDTO> createComment(Long postId, CommentRequestDTO req) {
+    public List<CommentResponseDTO> createComment(Long postId, CommentRequestDTO req, String userEmail) {
         System.out.println(">>> CommentService - createComment");
 
         PostEntity post = postRepository.findById(postId)
                             .orElseThrow(() -> new RuntimeException("존재하지 않는 게시글입니다."));
 
-        // TODO: 나중에 인증된 사용자 정보로 변경
-        User tempUser = userRepository.findById(2L)
-                            .orElseThrow(() -> new RuntimeException("임시 사용자를 찾을 수 없습니다."));
+        User user = userRepository.findByEmail(userEmail)
+                            .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
 
         CommentEntity comment = CommentEntity.builder()
                                     .content(req.getContent())
                                     .post(post)
-                                    .user(tempUser)
+                                    .user(user)
                                     .build();
 
         commentRepository.save(comment);
@@ -56,17 +55,16 @@ public class CommentService {
     }
 
     @Transactional
-    public CommentResponseDTO updateComment(Long commentId, CommentRequestDTO req) {
+    public CommentResponseDTO updateComment(Long commentId, CommentRequestDTO req, String userEmail) {
         System.out.println(">>> CommentService - updateComment");
 
         CommentEntity comment = commentRepository.findById(commentId)
                                 .orElseThrow(() -> new RuntimeException("존재하지 않는 댓글입니다."));
 
-        // TODO: 나중에 인증된 사용자 정보로 변경                        
-        User tempUser = userRepository.findById(2L)
-                            .orElseThrow(() -> new RuntimeException("임시 사용자를 찾을 수 없습니다."));
-        
-        if(!comment.getUser().getId().equals(tempUser.getId())) {
+        User user = userRepository.findByEmail(userEmail)
+                            .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+
+        if(!comment.getUser().getId().equals(user.getId())) {
             throw new RuntimeException("댓글 수정 권한이 없습니다.");
         }
 
@@ -76,17 +74,16 @@ public class CommentService {
     }
 
     @Transactional
-    public void deleteComment(Long commentId) {
+    public void deleteComment(Long commentId, String userEmail) {
         System.out.println(">>> CommentService - deleteComment");
 
         CommentEntity comment = commentRepository.findById(commentId)
                                 .orElseThrow(() -> new RuntimeException("존재하지 않는 댓글입니다."));
 
-        // TODO: 나중에 인증된 사용자 정보로 변경                        
-        User tempUser = userRepository.findById(2L)
-                            .orElseThrow(() -> new RuntimeException("임시 사용자를 찾을 수 없습니다."));
+        User user = userRepository.findByEmail(userEmail)
+                            .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
 
-        if(!comment.getUser().getId().equals(tempUser.getId())) {
+        if(!comment.getUser().getId().equals(user.getId())) {
             throw new RuntimeException("댓글 삭제 권한이 없습니다.");
         }
 
