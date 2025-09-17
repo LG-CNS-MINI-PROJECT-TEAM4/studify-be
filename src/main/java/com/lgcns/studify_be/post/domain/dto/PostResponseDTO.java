@@ -38,9 +38,8 @@ public class PostResponseDTO {
     private List<String> position;
     private List<CommentResponseDTO> comments;
     private Integer commentCount;
-    // private String authorId;
+    private Long authorId;
 
-    // authorId 추가 필요
     public static PostResponseDTO fromEntity(PostEntity post) {
         String categoryValue = post.getCategory() != null ? post.getCategory().getValue() : null;
         String statusValue = post.getStatus() != null ? post.getStatus().getValue() : null;
@@ -55,6 +54,7 @@ public class PostResponseDTO {
         Integer commentCount = post.getComments() != null ? post.getComments().size() : 0;
 
         return PostResponseDTO.builder()
+                            .authorId(post.getAuthor().getId())
                             .postId(post.getPostId())
                             .title(post.getTitle())
                             .content(post.getContent())

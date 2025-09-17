@@ -10,6 +10,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.lgcns.studify_be.comment.domain.entity.CommentEntity;
 import com.lgcns.studify_be.post.domain.dto.PostRequestDTO;
+import com.lgcns.studify_be.user.User;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
@@ -23,6 +24,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -90,9 +92,9 @@ public class PostEntity {
     @Column(name = "position", nullable = false)
     private List<Position> position = new ArrayList<>();
 
-    // @ManyToOne(fetch = FetchType.LAZY)
-    // @JoinColumn(name = "author_id", nullable = false)
-    // private UserEntity author;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "author_id", nullable = false)
+    private User author;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonManagedReference

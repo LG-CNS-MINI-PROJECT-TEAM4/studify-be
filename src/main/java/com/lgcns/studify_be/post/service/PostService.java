@@ -11,6 +11,8 @@ import com.lgcns.studify_be.post.domain.dto.PostResponseDTO;
 import com.lgcns.studify_be.post.domain.entity.PostEntity;
 import com.lgcns.studify_be.post.domain.entity.PostStatus;
 import com.lgcns.studify_be.post.repository.PostRepository;
+import com.lgcns.studify_be.user.User;
+import com.lgcns.studify_be.user.UserRepository;
 
 @Service
 public class PostService {
@@ -18,9 +20,13 @@ public class PostService {
     @Autowired
     private PostRepository postRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
     public PostResponseDTO register(PostRequestDTO request) {
-        // author 조회
-        PostEntity post = postRepository.save(request.toEntity());
+        User user = userRepository.findById(request.getAuthorId())
+                        .orElseThrow(() -> new RuntimeException("존재하지 않는 사용자"));
+        PostEntity post = postRepository.save(request.toEntity(user));
         return PostResponseDTO.fromEntity(post);
     }
 
@@ -60,7 +66,6 @@ public class PostService {
 
     @Transactional
     public PostResponseDTO updatePost(Integer postId, PostRequestDTO request) {
-        // author 조회
         PostEntity post = postRepository.findById(postId)
                     .orElseThrow(() -> new RuntimeException("존재하지 않는 모집글"));
         post.update(request);
