@@ -75,13 +75,28 @@ public class PostEntity {
     @Enumerated(EnumType.STRING)
     private PostStatus status;
 
+    @Column(nullable = false, length = 255)
+    private String meetingType;
+
+    @Column(nullable = false, length = 255)
+    private String duration;
+
+    @ElementCollection(targetClass = Position.class)
+    @CollectionTable(
+        name = "post_position",
+        joinColumns = @JoinColumn(name = "post_id")
+    )
+    @Enumerated(EnumType.STRING)
+    @Column(name = "position", nullable = false)
+    private List<Position> position = new ArrayList<>();
+
     // @ManyToOne(fetch = FetchType.LAZY)
     // @JoinColumn(name = "author_id", nullable = false)
     // private UserEntity author;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JsonManagedReference
-    private List<CommentEntity> comments = new ArrayList<>();
+    // @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    // @JsonManagedReference
+    // private List<CommentEntity> comments = new ArrayList<>();
 
     public void update(PostRequestDTO request) {
         this.title = request.getTitle();
@@ -90,5 +105,8 @@ public class PostEntity {
         this.recruitmentCount = request.getRecruitmentCount();
         this.techStack = request.getTechStack();
         this.deadline = request.getDeadline();
+        this.meetingType = request.getMeetingType();
+        this.duration = request.getDuration();
+        this.position = request.getPosition();
     }
 }

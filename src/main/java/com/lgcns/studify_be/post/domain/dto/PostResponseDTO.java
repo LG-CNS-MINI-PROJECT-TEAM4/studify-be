@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.lgcns.studify_be.comment.domain.dto.CommentResponseDTO;
 import com.lgcns.studify_be.post.domain.entity.Category;
+import com.lgcns.studify_be.post.domain.entity.Position;
 import com.lgcns.studify_be.post.domain.entity.PostEntity;
 import com.lgcns.studify_be.post.domain.entity.PostStatus;
 
@@ -33,14 +34,17 @@ public class PostResponseDTO {
     private List<String> techStack;
     private LocalDateTime deadline;
     private PostStatus status;
-    private List<CommentResponseDTO> comments;
+    private String meetingType;
+    private String duration;
+    private List<Position> position;
+    // private List<CommentResponseDTO> comments;
     // private String authorId;
 
     // authorId 추가 필요
     public static PostResponseDTO fromEntity(PostEntity post) {
-        List<CommentResponseDTO> commentDTOs = post.getComments().stream()
-                                                    .map(CommentResponseDTO::fromEntity)
-                                                    .toList();
+        // List<CommentResponseDTO> commentDTOs = post.getComments().stream()
+        //                                             .map(CommentResponseDTO::fromEntity)
+        //                                             .toList();
 
         return PostResponseDTO.builder()
                             .postId(post.getPostId())
@@ -53,7 +57,10 @@ public class PostResponseDTO {
                             .techStack(post.getTechStack())
                             .deadline(post.getDeadline())
                             .status(post.getStatus())
-                            .comments(commentDTOs)
+                            .meetingType(post.getMeetingType())
+                            .duration(post.getDuration())
+                            .position(post.getPosition())
+                            // .comments(commentDTOs)
                             .build();
     }
 }

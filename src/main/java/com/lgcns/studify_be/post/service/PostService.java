@@ -31,9 +31,10 @@ public class PostService {
     }
 
     public PostResponseDTO readPostDetail(Integer postId) {
-        PostEntity post = postRepository.findByIdWithComments(postId)
-                    .orElseThrow(() -> new RuntimeException("존재하지 않는 모집글"));
-        return PostResponseDTO.fromEntity(post);
+        // PostEntity post = postRepository.findByIdWithComments(postId)
+        //             .orElseThrow(() -> new RuntimeException("존재하지 않는 모집글"));
+        // return PostResponseDTO.fromEntity(post);
+        return null;
     }
 
     public List<PostResponseDTO> findPostByTitle(String keyword) {

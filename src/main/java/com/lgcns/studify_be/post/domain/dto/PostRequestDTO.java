@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.lgcns.studify_be.post.domain.entity.Category;
+import com.lgcns.studify_be.post.domain.entity.Position;
 import com.lgcns.studify_be.post.domain.entity.PostEntity;
 import com.lgcns.studify_be.post.domain.entity.PostStatus;
 
@@ -30,6 +31,9 @@ public class PostRequestDTO {
     private List<String> techStack;
     private PostStatus status;
     private LocalDateTime deadline;
+    private String meetingType;
+    private String duration;
+    private List<Position> position;
 
     // author 추가 필요
     public PostEntity toEntity() {
@@ -41,6 +45,9 @@ public class PostRequestDTO {
                         .techStack(this.techStack)
                         .status(this.status)
                         .deadline(this.deadline)
+                        .meetingType(this.meetingType)
+                        .duration(this.duration)
+                        .position(this.position)
                         .build();
     }
 }
