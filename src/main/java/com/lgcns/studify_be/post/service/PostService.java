@@ -23,8 +23,8 @@ public class PostService {
     @Autowired
     private UserRepository userRepository;
 
-    public PostResponseDTO register(PostRequestDTO request) {
-        User user = userRepository.findById(request.getAuthorId())
+    public PostResponseDTO register(PostRequestDTO request, String email) {
+        User user = userRepository.findByEmail(email)
                         .orElseThrow(() -> new RuntimeException("존재하지 않는 사용자"));
         PostEntity post = postRepository.save(request.toEntity(user));
         return PostResponseDTO.fromEntity(post);
@@ -65,22 +65,31 @@ public class PostService {
     }
 
     @Transactional
-    public PostResponseDTO updatePost(Long postId, PostRequestDTO request) {
+    public PostResponseDTO updatePost(Long postId, PostRequestDTO request, String email) {
         PostEntity post = postRepository.findById(postId)
                     .orElseThrow(() -> new RuntimeException("존재하지 않는 모집글"));
+        if (!post.getAuthor().getEmail().equals(email)) {
+            throw new RuntimeException("본인 글만 수정 가능합니다.");
+        }
         post.update(request);
         return PostResponseDTO.fromEntity(post);
     }
 
-    public void deletePost(Long postId) {
+    public void deletePost(Long postId, String email) {
         PostEntity post = postRepository.findById(postId)
                     .orElseThrow(() -> new RuntimeException("존재하지 않는 모집글"));
+        if (!post.getAuthor().getEmail().equals(email)) {
+            throw new RuntimeException("본인 글만 삭제 가능합니다.");
+        }
         postRepository.delete(post);
     }
 
-    public PostResponseDTO closePost(Long postId) {
+    public PostResponseDTO closePost(Long postId, String email) {
         PostEntity post = postRepository.findById(postId)
                     .orElseThrow(() -> new RuntimeException("존재하지 않는 모집글"));
+        if (!post.getAuthor().getEmail().equals(email)) {
+            throw new RuntimeException("본인 글만 마감 가능합니다.");
+        }
         post.setStatus(PostStatus.CLOSED);
         postRepository.save(post);
         return PostResponseDTO.fromEntity(post);

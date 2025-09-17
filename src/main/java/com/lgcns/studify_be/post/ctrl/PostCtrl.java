@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,6 +16,7 @@ import com.lgcns.studify_be.post.service.PostService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,10 +36,12 @@ public class PostCtrl {
     private PostService postService;
     
     // 모집글 생성
-    @Operation(summary = "모집글 생성")
+    @Operation(summary = "모집글 생성", security = { @SecurityRequirement(name = "bearerAuth") })
     @PostMapping("/posts")
-    public ResponseEntity<?> register(@RequestBody PostRequestDTO request) {
-        PostResponseDTO response = postService.register(request);
+    public ResponseEntity<?> register(@RequestBody PostRequestDTO request,
+                                        @AuthenticationPrincipal UserDetails userDetails) {
+        String email = userDetails.getUsername();
+        PostResponseDTO response = postService.register(request, email);
         
         if( response != null ) {
             return ResponseEntity.status(HttpStatus.CREATED).body(null);
@@ -89,11 +94,13 @@ public class PostCtrl {
     }
 
     // 모집글 수정
-    @Operation(summary = "모집글 수정")
+    @Operation(summary = "모집글 수정", security = { @SecurityRequirement(name = "bearerAuth") })
     @PutMapping("/{postId}")
     public ResponseEntity<?> updatePost(@PathVariable("postId") Long postId, 
-                                        @RequestBody PostRequestDTO request) {
-        PostResponseDTO response = postService.updatePost(postId, request);
+                                        @RequestBody PostRequestDTO request,
+                                        @AuthenticationPrincipal UserDetails userDetails) {
+        String email = userDetails.getUsername();
+        PostResponseDTO response = postService.updatePost(postId, request, email);
         if( response != null ) {
             return ResponseEntity.status(HttpStatus.CREATED).body(null);
         } else {
@@ -102,18 +109,22 @@ public class PostCtrl {
     }
 
     // 모집글 삭제
-    @Operation(summary = "모집글 삭제")
+    @Operation(summary = "모집글 삭제", security = { @SecurityRequirement(name = "bearerAuth") })
     @DeleteMapping("/{postId}")
-    public ResponseEntity<?> deletePost(@PathVariable("postId") Long postId) {
-        postService.deletePost(postId);
+    public ResponseEntity<?> deletePost(@PathVariable("postId") Long postId,
+                                        @AuthenticationPrincipal UserDetails userDetails) {
+        String email = userDetails.getUsername();
+        postService.deletePost(postId, email);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
     }
-
+    
     // 마감하기
-    @Operation(summary = "모집글 마감")
+    @Operation(summary = "모집글 마감", security = { @SecurityRequirement(name = "bearerAuth") })
     @PatchMapping("/{postId}")
-    public ResponseEntity<?> closePost(@PathVariable("postId") Long postId) {
-        PostResponseDTO response = postService.closePost(postId);
+    public ResponseEntity<?> closePost(@PathVariable("postId") Long postId,
+    @AuthenticationPrincipal UserDetails userDetails) {
+        String email = userDetails.getUsername();
+        PostResponseDTO response = postService.closePost(postId, email);
         if( response != null ) {
             return ResponseEntity.status(HttpStatus.CREATED).body(null);
         } else {
