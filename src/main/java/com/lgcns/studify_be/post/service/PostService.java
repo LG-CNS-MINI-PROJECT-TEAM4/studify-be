@@ -37,7 +37,7 @@ public class PostService {
                         .toList();     
     }
 
-    public PostResponseDTO readPostDetail(Integer postId) {
+    public PostResponseDTO readPostDetail(Long postId) {
         PostEntity post = postRepository.findByIdWithComments(postId)
                     .orElseThrow(() -> new RuntimeException("존재하지 않는 모집글"));
         return PostResponseDTO.fromEntity(post);
@@ -65,20 +65,20 @@ public class PostService {
     }
 
     @Transactional
-    public PostResponseDTO updatePost(Integer postId, PostRequestDTO request) {
+    public PostResponseDTO updatePost(Long postId, PostRequestDTO request) {
         PostEntity post = postRepository.findById(postId)
                     .orElseThrow(() -> new RuntimeException("존재하지 않는 모집글"));
         post.update(request);
         return PostResponseDTO.fromEntity(post);
     }
 
-    public void deletePost(Integer postId) {
+    public void deletePost(Long postId) {
         PostEntity post = postRepository.findById(postId)
                     .orElseThrow(() -> new RuntimeException("존재하지 않는 모집글"));
         postRepository.delete(post);
     }
 
-    public PostResponseDTO closePost(Integer postId) {
+    public PostResponseDTO closePost(Long postId) {
         PostEntity post = postRepository.findById(postId)
                     .orElseThrow(() -> new RuntimeException("존재하지 않는 모집글"));
         post.setStatus(PostStatus.CLOSED);
