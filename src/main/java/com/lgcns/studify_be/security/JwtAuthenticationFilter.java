@@ -62,12 +62,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
         }
         System.out.println("=== JWT Filter 종료 ===");
-
+        
         filterChain.doFilter(request, response);
     }
 
     private String resolveToken(HttpServletRequest req) {
         String bearer = req.getHeader("Authorization");
+        System.out.println("Authorization Header: " + bearer);
         System.out.println("Authorization Header: " + bearer);
         if (StringUtils.hasText(bearer) && bearer.startsWith("Bearer ")) {
             String token = bearer.substring(7);
