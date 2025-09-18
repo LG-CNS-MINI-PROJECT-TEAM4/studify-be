@@ -51,6 +51,29 @@ public class SecurityConfig {
         return http.build();
     }
 
+    // 전역 CORS 설정
+    @Bean
+    public org.springframework.web.cors.CorsConfigurationSource corsConfigurationSource() {
+        var cfg = new org.springframework.web.cors.CorsConfiguration();
+        // 프론트 개발 주소 정확히 기입 (Vite 기본 5173, CRA 3000 등)
+        cfg.setAllowedOrigins(java.util.List.of(
+            "http://localhost:3000",
+            "http://127.0.0.1:3000",
+            "http://localhost:5173",
+            "http://127.0.0.1:5173"
+        ));
+        cfg.setAllowedMethods(java.util.List.of("GET","POST","PUT","PATCH","DELETE","OPTIONS"));
+        cfg.setAllowedHeaders(java.util.List.of("Content-Type","Authorization","X-Requested-With","Accept"));
+        cfg.setExposedHeaders(java.util.List.of("Authorization","Location")); // 토큰/Location 노출 시
+        cfg.setAllowCredentials(true); // 쿠키/자격증명 사용 시
+        cfg.setMaxAge(3600L);
+
+        var source = new org.springframework.web.cors.UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", cfg);
+        return source;
+    }
+
+
     @Bean
     public PasswordEncoder passwordEncoder() { return new BCryptPasswordEncoder(); }
 
