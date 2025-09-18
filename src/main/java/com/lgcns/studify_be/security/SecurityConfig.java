@@ -25,6 +25,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .csrf(csrf -> csrf.disable())
             .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
@@ -58,9 +59,7 @@ public class SecurityConfig {
         // 프론트 개발 주소 정확히 기입 (Vite 기본 5173, CRA 3000 등)
         cfg.setAllowedOrigins(java.util.List.of(
             "http://localhost:3000",
-            "http://127.0.0.1:3000",
-            "http://localhost:5173",
-            "http://127.0.0.1:5173"
+            "http://127.0.0.1:3000"
         ));
         cfg.setAllowedMethods(java.util.List.of("GET","POST","PUT","PATCH","DELETE","OPTIONS"));
         cfg.setAllowedHeaders(java.util.List.of("Content-Type","Authorization","X-Requested-With","Accept"));
