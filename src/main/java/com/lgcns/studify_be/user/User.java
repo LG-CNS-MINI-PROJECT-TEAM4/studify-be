@@ -1,9 +1,13 @@
 package com.lgcns.studify_be.user;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.lgcns.studify_be.application.domain.entity.ApplicationEntity;
 import com.lgcns.studify_be.common.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(
@@ -32,4 +36,8 @@ public class User extends BaseTimeEntity {
     private UserStatus status = UserStatus.ACTIVE;
 
     private LocalDateTime lastLoginAt;
+
+    @OneToMany(mappedBy = "applicant", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<ApplicationEntity> applications = new ArrayList<>();
 }

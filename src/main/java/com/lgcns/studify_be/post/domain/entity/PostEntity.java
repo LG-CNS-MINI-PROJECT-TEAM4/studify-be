@@ -8,6 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.lgcns.studify_be.application.domain.entity.ApplicationEntity;
 import com.lgcns.studify_be.comment.domain.entity.CommentEntity;
 import com.lgcns.studify_be.post.domain.dto.PostRequestDTO;
 import com.lgcns.studify_be.user.User;
@@ -99,6 +100,10 @@ public class PostEntity {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<CommentEntity> comments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<ApplicationEntity> applications = new ArrayList<>();
 
     public void update(PostRequestDTO request) {
         this.title = request.getTitle();

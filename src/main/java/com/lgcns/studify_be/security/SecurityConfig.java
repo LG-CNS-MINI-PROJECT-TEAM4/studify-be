@@ -32,11 +32,12 @@ public class SecurityConfig {
                 .requestMatchers(
                     "/api/auth/**",
                     "/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**",
-                    "/actuator/health"
+                    "/actuator/health", "/studify/api/v1/notifications/health"
                 ).permitAll()
                 .requestMatchers(HttpMethod.GET, "/").permitAll()
                 .requestMatchers(HttpMethod.GET, "/studify/api/v1/post/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/studify/api/v1/users").permitAll() // ← 가입 허용
+                .requestMatchers("/ws/**").permitAll() // ← 가입 허용
                 .anyRequest().authenticated()
 
             )
