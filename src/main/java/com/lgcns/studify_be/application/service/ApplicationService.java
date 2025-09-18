@@ -56,9 +56,16 @@ public class ApplicationService {
         ApplicationEntity savedApplication = applicationRepository.save(application);
 
         // 작성자에게 WebSocket 알림
-        notificationService.sendNotification(
-                post.getAuthor(), 
-                applicant.getNickname() + "님이 신청했습니다."
+        // notificationService.sendNotification(
+        //         post.getAuthor(), 
+        //         applicant.getNickname() + "님이 신청했습니다."
+        // );
+        notificationService.sendApplicationNotification(
+            post.getAuthor(),
+            applicant, 
+            savedApplication.getApplicationId(),
+            postId,
+            post.getTitle()
         );
         return ApplicationResponseDTO.fromEntity(savedApplication);
     }
@@ -74,9 +81,15 @@ public class ApplicationService {
         application.setStatus(ApplicationStatus.APPROVED);
         ApplicationEntity savedApplication = applicationRepository.save(application);
 
-        notificationService.sendNotification(
-                savedApplication.getApplicant(),
-                "신청이 승인되었습니다."
+        // notificationService.sendNotification(
+        //         savedApplication.getApplicant(),
+        //         "신청이 승인되었습니다."
+        // );
+        // 승인 알림 전송 (신청자에게)
+        notificationService.sendApplicationResultNotification(
+            application.getApplicant(),
+            "APPROVED",
+            application.getPost().getTitle()
         );
         return ApplicationResponseDTO.fromEntity(savedApplication);
     }
@@ -93,9 +106,15 @@ public class ApplicationService {
         app.setStatus(ApplicationStatus.REJECTED);
         ApplicationEntity savedApplication = applicationRepository.save(app);
 
-        notificationService.sendNotification(
-                savedApplication.getApplicant(),
-                "신청이 거부되었습니다."
+        // notificationService.sendNotification(
+        //         savedApplication.getApplicant(),
+        //         "신청이 거부되었습니다."
+        // );
+        // 거절 알림 전송 (신청자에게)
+        notificationService.sendApplicationResultNotification(
+            app.getApplicant(),
+            "REJECTED",
+            app.getPost().getTitle()
         );
         return ApplicationResponseDTO.fromEntity(savedApplication);
     }
