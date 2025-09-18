@@ -1,6 +1,7 @@
 package com.lgcns.studify_be.post.domain.dto;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,9 +48,12 @@ public class PostResponseDTO {
                 ? post.getPosition().stream().map(Position::getValue).collect(Collectors.toList())
                 : null;
         
-        List<CommentResponseDTO> commentDTOs = post.getComments().stream()
-                                                    .map(CommentResponseDTO::fromEntity)
-                                                    .toList();
+        List<CommentResponseDTO> commentDTOs = post.getComments() != null ?
+                post.getComments().stream()
+                    .map(CommentResponseDTO::fromEntity)
+                    .toList() :
+                new ArrayList<>();
+
 
         Integer commentCount = post.getComments() != null ? post.getComments().size() : 0;
 
