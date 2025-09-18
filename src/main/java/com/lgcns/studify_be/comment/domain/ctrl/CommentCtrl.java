@@ -38,9 +38,13 @@ public class CommentCtrl {
         @RequestBody CommentRequestDTO requestDTO,
         @AuthenticationPrincipal UserDetails userDetails
     ) {
-        System.out.println(">>> CommentCtrl - register");
+        System.out.println("=== CommentCtrl - register 시작 ===");
         System.out.println("postId: " + postId);
         System.out.println("requestDTO: " + requestDTO);
+        System.out.println("userDetails: " + (userDetails != null ? "인증됨" : "null"));
+        if (userDetails != null) {
+            System.out.println("인증된 사용자 이메일: " + userDetails.getUsername());
+        }
 
         List<CommentResponseDTO> comments = commentService.createComment(postId, requestDTO, userDetails.getUsername());
 
