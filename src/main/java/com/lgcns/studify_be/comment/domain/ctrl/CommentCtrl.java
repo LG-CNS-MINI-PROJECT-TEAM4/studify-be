@@ -13,6 +13,8 @@ import com.lgcns.studify_be.comment.service.CommentService;
 
 import io.swagger.v3.oas.annotations.Operation;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +24,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 
 @RestController
-@RequestMapping("/api/v1/post/{postId}/comment")
+@RequestMapping("/studify/api/v1/post/{postId}/comment")
 public class CommentCtrl {
     
     @Autowired
@@ -32,14 +34,14 @@ public class CommentCtrl {
     @Operation(summary = "댓글 등록")
     public ResponseEntity<List<CommentResponseDTO>> register(
         @PathVariable("postId") Long postId,
-        @RequestBody CommentRequestDTO requestDTO
-        // @AuthenticationPrincipal UserDetailsImpl userDetails
+        @RequestBody CommentRequestDTO requestDTO,
+        @AuthenticationPrincipal UserDetails userDetails
     ) {
         System.out.println(">>> CommentCtrl - register");
         System.out.println("postId: " + postId);
         System.out.println("requestDTO: " + requestDTO);
 
-        List<CommentResponseDTO> comments = commentService.createComment(postId, requestDTO);
+        List<CommentResponseDTO> comments = commentService.createComment(postId, requestDTO, userDetails.getUsername());
 
         return ResponseEntity.ok(comments);
     }
@@ -48,30 +50,30 @@ public class CommentCtrl {
     @Operation(summary = "댓글 수정")
     public ResponseEntity<CommentResponseDTO> update(
         @PathVariable("postId") Long postId,
-        @PathVariable("commentId") Long commentId, 
-        @RequestBody CommentRequestDTO requestDTO
-        // @AuthenticationPrincipal UserDetailsImpl userDetails
+        @PathVariable("commentId") Long commentId,
+        @RequestBody CommentRequestDTO requestDTO,
+        @AuthenticationPrincipal UserDetails userDetails
     ) {
         System.out.println(">>> CommentCtrl - update");
         System.out.println("commentId: " + commentId);
         System.out.println("requestDTO: " + requestDTO);
 
-        CommentResponseDTO updatedComment = commentService.updateComment(commentId, requestDTO);
+        CommentResponseDTO updatedComment = commentService.updateComment(commentId, requestDTO, userDetails.getUsername());
         
         return ResponseEntity.ok(updatedComment);
     }
 
-    @DeleteMapping("/{commentId}") 
+    @DeleteMapping("/{commentId}")
     @Operation(summary = "댓글 삭제")
     public ResponseEntity<Void> delete(
         @PathVariable("postId") Long postId,
-        @PathVariable("commentId") Long commentId
-        // @AuthenticationPrincipal UserDetailsImpl userDetails
+        @PathVariable("commentId") Long commentId,
+        @AuthenticationPrincipal UserDetails userDetails
     ) {
         System.out.println(">>> CommentCtrl - delete");
         System.out.println("commentId: " + commentId);
 
-        commentService.deleteComment(commentId);
+        commentService.deleteComment(commentId, userDetails.getUsername());
 
         return ResponseEntity.noContent().build();
     }
