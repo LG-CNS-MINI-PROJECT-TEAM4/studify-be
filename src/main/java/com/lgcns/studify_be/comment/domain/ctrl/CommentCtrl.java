@@ -12,6 +12,7 @@ import com.lgcns.studify_be.comment.domain.dto.CommentResponseDTO;
 import com.lgcns.studify_be.comment.service.CommentService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,14 +25,14 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 
 @RestController
-@RequestMapping("/studify/api/v1/post/{postId}/comment")
+@RequestMapping("studify/api/v1/post/{postId}/comment")
 public class CommentCtrl {
     
     @Autowired
     private CommentService commentService;
 
     @PostMapping("/register")
-    @Operation(summary = "댓글 등록")
+    @Operation(summary = "댓글 등록", security = { @SecurityRequirement(name = "bearerAuth") })
     public ResponseEntity<List<CommentResponseDTO>> register(
         @PathVariable("postId") Long postId,
         @RequestBody CommentRequestDTO requestDTO,
@@ -47,7 +48,7 @@ public class CommentCtrl {
     }
     
     @PutMapping("/{commentId}")
-    @Operation(summary = "댓글 수정")
+    @Operation(summary = "댓글 수정", security = { @SecurityRequirement(name = "bearerAuth") })
     public ResponseEntity<CommentResponseDTO> update(
         @PathVariable("postId") Long postId,
         @PathVariable("commentId") Long commentId,
@@ -64,7 +65,7 @@ public class CommentCtrl {
     }
 
     @DeleteMapping("/{commentId}")
-    @Operation(summary = "댓글 삭제")
+    @Operation(summary = "댓글 삭제", security = { @SecurityRequirement(name = "bearerAuth") })
     public ResponseEntity<Void> delete(
         @PathVariable("postId") Long postId,
         @PathVariable("commentId") Long commentId,
