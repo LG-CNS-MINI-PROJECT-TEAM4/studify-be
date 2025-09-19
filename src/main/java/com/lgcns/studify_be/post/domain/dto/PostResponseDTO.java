@@ -40,6 +40,7 @@ public class PostResponseDTO {
     private List<CommentResponseDTO> comments;
     private Integer commentCount;
     private Long authorId;
+    private String nickname;
 
     public static PostResponseDTO fromEntity(PostEntity post) {
         String categoryValue = post.getCategory() != null ? post.getCategory().getValue() : null;
@@ -74,6 +75,7 @@ public class PostResponseDTO {
                             .position(positionValues)
                             .comments(commentDTOs)
                             .commentCount(commentCount)
+                            .nickname(post.getAuthor().getNickname())
                             .build();
     }
 }
